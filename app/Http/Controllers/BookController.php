@@ -55,19 +55,18 @@ class BookController extends Controller
         $request->validated();
         $file = $request->file('cover');
         $name = "";
-
-
-
-        if ($file->isValid()) {
-            $width = 400;
-            $height = 520;
-            $random = Str::random(10);
-            $name = time() . $random . '.' . $file->getClientOriginalExtension();
-            $img = Image::make($file->getRealPath());
-            $img->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $path = $img->save(public_path('images/img/') . $name);
+        if ($file != null) {
+            if ($file->isValid()) {
+                $width = 400;
+                $height = 520;
+                $random = Str::random(10);
+                $name = time() . $random . '.' . $file->getClientOriginalExtension();
+                $img = Image::make($file->getRealPath());
+                $img->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $path = $img->save(public_path('images/img/') . $name);
+            }
         }
 
         $book = new Book();
@@ -121,7 +120,24 @@ class BookController extends Controller
     public function update(BookRequest $request, $id)
     {
         $request->validated();
-        Book::find($id)->update(['title' => $request->input('title'), 'description' => $request->input('description'), 'pages' => $request->input('pages'), 'author_id' => $request->input('author'), 'category_id' => $request->input('category'), 'cover' => $request->input('cover')]);
+
+        $file = $request->file('cover');
+        $name = "";
+        if ($file != null) {
+            if ($file->isValid()) {
+                $width = 400;
+                $height = 520;
+                $random = Str::random(10);
+                $name = time() . $random . '.' . $file->getClientOriginalExtension();
+                $img = Image::make($file->getRealPath());
+                $img->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $path = $img->save(public_path('images/img/') . $name);
+            }
+        }
+
+        Book::find($id)->update(['title' => $request->input('title'), 'description' => $request->input('description'), 'pages' => $request->input('pages'), 'cover' => $name,'author_id' => $request->input('author'), 'category_id' => $request->input('category')]);
         return redirect()->back()->with('success', 'Dati aggiornati con successo!');
     }
 

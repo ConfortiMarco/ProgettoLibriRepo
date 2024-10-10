@@ -84,8 +84,7 @@
                     </div>
                     <div class="pt-4 border-top">
                         <button type="submit" class="btn btn-primary me-3">Aggiungi il Libro</button>
-                        <a href="index.blade.php" class="link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Annulla</a>
-                    </div>
+                                            </div>
                 </form>
             </div>
         </section>
